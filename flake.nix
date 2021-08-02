@@ -15,7 +15,7 @@
           final: prev:
           {
             poliscoops-htdocs = final.callPackage ./htdocs {};
-            docsplit = final.callPackage ./backend/docsplit.nix {};
+            docsplit = final.callPackage ./backend/docksplit/default.nix {};
           };
         
         packages = forAllSystems (system:
