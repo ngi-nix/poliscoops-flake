@@ -1,27 +1,18 @@
-{ stdenv
-, lib
-, bundlerApp
-
-, fetchFromGitHub
-}:
-with lib;
+{ stdenv, lib, bundlerApp }:
 let
   name = "docsplit";
   version = "0.7.6";
-in
-bundlerApp {
+in bundlerApp {
   pname = name;
-
-  gemdir = fetchFromGitHub {
-    owner = "documentcloud";
-    repo = name;
-    rev = version;
-    sha256 = "sha256-lR8A4wZaaVS3GpoSplWRjpxnK+jZeDWtoPBGVrUDZtk=";
-  };
-
   exes = [ "docsplit" ];
+  gemdir = ./.;
 
-  buildInputs =
-    [ rake
-    ];
+  meta = with lib; {
+    Description =
+      "A command-line utility and Ruby library for splitting apart documents into their component parts";
+    homepage = "https://github.com/documentcloud/docsplit";
+    license = licenses.lgpl3Only;
+    maintainers = [ ];
+    platforms = platform.unix;
+  };
 }
