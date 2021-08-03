@@ -1,18 +1,20 @@
 {
-  inputs = { nixpkgs.url = "nixpkgs"; };
+  description =
+    "PoliScoops helps you keep track of political news in the 27 Member States of the EU, as well as the political news from the EU Parliament and the UK.";
 
-  outputs = { nixpkgs, self }:
-    let
-      supportedSystems = [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
-      forAllSystems' = systems: fun: nixpkgs.lib.genAttrs systems fun;
-      forAllSystems = forAllSystems' supportedSystems;
-    in with nixpkgs.lib; {
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = { self, nixpkgs, utils }:
+    with nixpkgs.lib; {
       overlays.poliscoops = final: prev: {
         poliscoops-htdocs = final.callPackage ./htdocs { };
         docsplit = final.callPackage ./backend/docsplit { };
       };
 
-      packages = forAllSystems (system:
+      packages = utils.lib.eachDefaultSystem (system:
         let
           pkgs = import nixpkgs {
             inherit system;
